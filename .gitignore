@@ -1,0 +1,74 @@
+# Python bytecode and cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+
+# FastAPI-specific
+*.log
+instance/
+logs/
+uploads/
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Migrations and database
+migrations/
+db.sqlite3
+
+# Static and media files
+/static/
+/media/
+
+# Build artifacts
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+build/
+dist/
+
+# Test files and coverage
+.pytest_cache/
+htmlcov/
+.coverage
+*.cover
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Jupyter Notebook (if applicable)
+.ipynb_checkpoints/
+
+# Containerization
+*.dockerfile
+docker-compose.override.yml
+
+# Dependencies
+pip-log.txt
+pip-delete-this-directory.txt
+
+# FastAPI Cache (if any temporary cache is created)
+cache/
+
+# Temporary files
+*.tmp
+*.temp
