@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -12,6 +12,7 @@ class Notification(Base):
     user_id = Column(Integer, nullable=False)
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)
+    notification_metadata = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     deleted_at = Column(DateTime, nullable=True)
     read_at = Column(DateTime, nullable=True)

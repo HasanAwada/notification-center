@@ -1,12 +1,13 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class NotificationCreate(BaseModel):
     user_id: int
     title: str
     content: str
+    notification_metadata: Optional[Dict[str, Any]] = None  # Metadata is optional
 
 
 class NotificationOut(NotificationCreate):
