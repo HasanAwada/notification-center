@@ -16,3 +16,13 @@ class NotificationOut(NotificationCreate):
 
     class Config:
         orm_mode = True
+        from_attributes = True
+
+
+class MarkReadRequest(BaseModel):
+    user_id: int
+    read: bool
+
+
+class DeleteNotificationRequest(BaseModel):
+    user_id: int

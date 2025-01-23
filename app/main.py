@@ -3,4 +3,4 @@ from app.routers import notifications
 
 app = FastAPI()
 
-app.include_router(notifications.router, prefix="/notifications", tags=["notifications"])
+app.include_router(notifications.router, prefix="/api/v1/notifications", tags=["notifications"])
