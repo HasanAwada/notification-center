@@ -27,8 +27,8 @@ async def create_notification(notification: NotificationCreate, db: AsyncSession
 async def get_notifications(
     user_id: Optional[int] = Query(None),
     search_text: Optional[str] = Query(None),
-    page: int = Query(1, ge=1),  # Page number (default is 1, must be >= 1)
-    page_size: int = Query(10, ge=1, le=100),  # Items per page (default is 10, max is 100)
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1, le=100),
     db: AsyncSession = Depends(get_db)
 ):
     # Base query: Filter out deleted notifications
@@ -66,28 +66,43 @@ async def get_notifications(
     return response
 
 
-@router.put("/{notification_id}/read", status_code=status.HTTP_200_OK, response_model=NotificationOut)
-async def mark_notification_read(
-    notification_id: int,
-    request: MarkReadRequest,  # Accept the body as a Pydantic model
-    db: AsyncSession = Depends(get_db)
+@router.put("/mark-read", status_code=status.HTTP_200_OK)
+async def mark_notifications_read(
+    request: MarkReadRequest,
+    db: AsyncSession = Depends(get_db),
 ):
+    # Validate input
+    if not request.mark_all and not request.notification_ids:
+        raise HTTPException(
+            status_code=400,
+            detail="Either notification_ids or mark_all flag must be provided"
+        )
+
     query = select(Notification).where(
-        Notification.id == notification_id,
-        Notification.user_id == request.user_id
+        Notification.user_id == request.user_id,
+        Notification.deleted_at.is_(None)
     )
+
+    if request.mark_all:
+        query = query
+    else:
+        query = query.where(Notification.id.in_(request.notification_ids))
+
     result = await db.execute(query)
-    db_notification = result.scalars().first()
+    notifications = result.scalars().all()
 
-    if not db_notification:
-        raise HTTPException(status_code=404, detail="Notification not found or unauthorized access")
+    if not notifications:
+        raise HTTPException(status_code=404, detail="No matching notifications found")
 
-    db_notification.read_at = datetime.utcnow() if request.read else None
-    db.add(db_notification)
+    for notification in notifications:
+        notification.read_at = datetime.utcnow() if request.read else None
+        db.add(notification)
+
     await db.commit()
-    await db.refresh(db_notification)
 
-    return db_notification
+    return {
+        "detail": f"{len(notifications)} notifications marked as {'read' if request.read else 'unread'}"
+    }
 
 
 @router.put("/{notification_id}", status_code=status.HTTP_200_OK)

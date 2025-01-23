@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 
 class NotificationCreate(BaseModel):
@@ -22,6 +22,8 @@ class NotificationOut(NotificationCreate):
 
 class MarkReadRequest(BaseModel):
     user_id: int
+    notification_ids: Optional[List[int]] = None
+    mark_all: Optional[bool] = False
     read: bool
 
 
