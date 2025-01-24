@@ -103,7 +103,7 @@ async def mark_notifications_read(
     }
 
 
-@router.put("/{notification_id}", status_code=status.HTTP_200_OK)
+@router.delete("/{notification_id}", status_code=status.HTTP_200_OK)
 async def delete_notification(
     notification_id: int,
     request: DeleteNotificationRequest,
