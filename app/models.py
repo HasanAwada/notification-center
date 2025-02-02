@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from sqlalchemy import JSON, Column, DateTime, Integer, String, Text
@@ -9,7 +10,7 @@ Base = declarative_base()
 class Notification(Base):
     __tablename__ = "notifications"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(Integer, nullable=False)
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)

@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -12,7 +13,7 @@ class NotificationCreate(BaseModel):
 
 
 class NotificationOut(NotificationCreate):
-    id: int
+    id: uuid.UUID
     created_at: datetime
     read_at: Optional[datetime]
 
