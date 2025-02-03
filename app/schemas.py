@@ -24,7 +24,7 @@ class NotificationOut(NotificationCreate):
 
 class MarkReadRequest(BaseModel):
     user_id: int
-    notification_ids: Optional[List[int]] = None
+    notification_ids: Optional[List[str]] = None
     mark_all: Optional[bool] = False
     read: bool
 
